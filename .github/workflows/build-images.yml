@@ -1,0 +1,15 @@
+name: Build Docker Images
+
+on:
+  workflow_run:
+    workflows: [ "Build Modules" ]
+      types: [ completed ]
+
+job:
+  build-and-push-image:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - run: echo "Building docker image $GITHUB_REF"
