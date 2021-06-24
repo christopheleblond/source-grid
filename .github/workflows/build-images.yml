@@ -1,9 +1,11 @@
-name: Build Docker Images
+name: Build & Publish Docker Images
 
 on:
-  workflow_run:
-    workflows: ["Build Modules"]
-    types: [completed]
+  push:
+    branches: [ main ]
+
+env:
+  REGISTRY: ghcr.io
 
 jobs:
   build-and-push-image:
@@ -12,4 +14,59 @@ jobs:
       contents: read
       packages: write
     steps:
-    - run: echo "Building docker image $GITHUB_REF"
+      - uses: actions/checkout@v2
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+      - name: Build with Maven
+        run: mvn -B package --file pom.xml
+      - name: Log in to the Container registry
+        uses: docker/login-action@v1
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels) for Docker (sourcegrid-listener)
+        id: meta-sourcegrid-listener
+        uses: docker/metadata-action@v3
+        with:
+          images: ${{ env.REGISTRY }}/sourcegrid-listener
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta-sourcegrid-listener.outputs.tags }}
+          labels: ${{ steps.meta-sourcegrid-listener.outputs.labels }}
+
+      - name: Extract metadata (tags, labels) for Docker (sourcegrid-stream)
+        id: meta-sourcegrid-stream
+        uses: docker/metadata-action@v3
+        with:
+          images: ${{ env.REGISTRY }}/sourcegrid-stream
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta-sourcegrid-stream.outputs.tags }}
+          labels: ${{ steps.meta-sourcegrid-stream.outputs.labels }}
+
+      - name: Extract metadata (tags, labels) for Docker (sourcegrid-data)
+        id: meta-sourcegrid-data
+        uses: docker/metadata-action@v3
+        with:
+          images: ${{ env.REGISTRY }}/sourcegrid-data
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta-sourcegrid-data.outputs.tags }}
+          labels: ${{ steps.meta-sourcegrid-data.outputs.labels }}
