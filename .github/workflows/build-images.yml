@@ -33,7 +33,7 @@ jobs:
         id: meta-sourcegrid-listener
         uses: docker/metadata-action@v3
         with:
-          images: ${{ env.REGISTRY }}/sourcegrid-listener
+          images: ${{ env.REGISTRY }}/${{ github.repository }}/sourcegrid-listener
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
@@ -47,7 +47,7 @@ jobs:
         id: meta-sourcegrid-stream
         uses: docker/metadata-action@v3
         with:
-          images: ${{ env.REGISTRY }}/sourcegrid-stream
+          images: ${{ env.REGISTRY }}/${{ github.repository }}/sourcegrid-stream
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
@@ -61,7 +61,7 @@ jobs:
         id: meta-sourcegrid-data
         uses: docker/metadata-action@v3
         with:
-          images: ${{ env.REGISTRY }}/sourcegrid-data
+          images: ${{ env.REGISTRY }}/${{ github.repository }}/sourcegrid-data
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
