@@ -2,8 +2,8 @@ name: Build Docker Images
 
 on:
   workflow_run:
-    workflows: [ "Build Modules" ]
-      types: [ completed ]
+    workflows: ["Build Modules"]
+    types: [completed]
 
 job:
   build-and-push-image:
@@ -12,4 +12,4 @@ job:
       contents: read
       packages: write
     steps:
-      - run: echo "Building docker image $GITHUB_REF"
+    - run: echo "Building docker image $GITHUB_REF"
