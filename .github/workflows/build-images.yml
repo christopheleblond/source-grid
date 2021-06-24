@@ -5,7 +5,7 @@ on:
     workflows: ["Build Modules"]
     types: [completed]
 
-job:
+jobs:
   build-and-push-image:
     runs-on: ubuntu-latest
     permissions:
