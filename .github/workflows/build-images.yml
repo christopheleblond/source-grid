@@ -38,7 +38,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
         with:
-          context: .
+          context: sourcegrid-listener
           push: true
           tags: ${{ steps.meta-sourcegrid-listener.outputs.tags }}
           labels: ${{ steps.meta-sourcegrid-listener.outputs.labels }}
@@ -52,7 +52,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
         with:
-          context: .
+          context: sourcegrid-stream
           push: true
           tags: ${{ steps.meta-sourcegrid-stream.outputs.tags }}
           labels: ${{ steps.meta-sourcegrid-stream.outputs.labels }}
@@ -66,7 +66,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
         with:
-          context: .
+          context: sourcegrid-data
           push: true
           tags: ${{ steps.meta-sourcegrid-data.outputs.tags }}
           labels: ${{ steps.meta-sourcegrid-data.outputs.labels }}
