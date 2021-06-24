@@ -1,3 +1,6 @@
+package main.samples;
+
+import com.github.javaparser.JavaParser;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.expr.BinaryExpr;
@@ -9,7 +12,7 @@ import com.github.javaparser.symbolsolver.resolution.typesolvers.ReflectionTypeS
 /**
  * Entrypoint
  */
-public class App 
+public class Sample
 {
     public static void main( String[] args )
     {
@@ -18,10 +21,12 @@ public class App
         combinedTypeSolver.add(new ReflectionTypeSolver());
 
         // Configure JavaParser to use type resolution
+        JavaParser javaParser = new JavaParser();
         JavaSymbolSolver symbolSolver = new JavaSymbolSolver(combinedTypeSolver);
         StaticJavaParser.getConfiguration().setSymbolResolver(symbolSolver);
 
         // Parse some code
+
         CompilationUnit cu = StaticJavaParser.parse("class X { int x() { return 1 + 1.0 - 5; } }");
 
         // Find all the calculations with two sides:
